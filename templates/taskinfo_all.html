@@ -1,0 +1,32 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>用户uid</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for key in tasklist %}
+    <tr>
+        <td><label>{{ key['uid'] }}</label></td>
+      <td>{{ key['status'] }}&nbsp;进度&nbsp;{{ key['finished'] + key['failed'] }}/{{ key['total'] }}</td>
+      <td>
+          <button type="button" class="btn btn-sm btn-primary" onclick="pauseTask({{ key['uid'] }} )" name="btnPause{{ key['uid'] }}">
+              {% if key['pause'] %}
+                  继续
+              {% else %}
+                  暂停
+              {% endif %}</button>
+          <button type="button" class="btn btn-sm btn-primary" onclick="stopTask({{ key['uid'] }})" name="btnStop{{ key['uid'] }}">
+              {% if key['stop'] %}
+                  开始
+              {% else %}
+                  停止
+              {% endif %}</button>
+          <button type="button" class="btn btn-sm btn-link" onclick="$(location).attr('href','{{ url_for('taskInfo',uid=key['uid']) }}')">查看详细信息</button>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

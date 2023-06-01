@@ -1,0 +1,39 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>用户uid</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td><label>{{ info['uid'] }}</label></td>
+      <td>{{ info['status'] }}&nbsp;进度&nbsp;{{ info['finished'] + info['failed'] }}/{{ info['total'] }}</td>
+      <td>
+          <button type="button" class="btn btn-sm btn-primary" onclick="pauseTask({{ info['uid'] }} )" name="btnPause{{ info['uid'] }}">
+              {% if info['pauseSignal'] %}
+                  继续
+              {% else %}
+                  暂停
+              {% endif %}</button>
+          <button type="button" class="btn btn-sm btn-primary" onclick="stopTask({{ info['uid'] }})" name="btnStop{{ info['uid'] }}">
+              {% if info['stopSignal'] %}
+                  开始
+              {% else %}
+                  停止
+              {% endif %}</button>
+        {% if info['status'] == "finished" %}
+            <script>clearInterval(timer)</script>
+            <button type="button" class="btn btn-sm btn-link" onclick="$(location).attr('href','{{ url_for('analyzer',uid=info['uid']) }}')">查看分析结果</button>
+        {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+<form role="form">
+  <div class="form-group">
+      <label >任务日志</label>
+      <textarea id="tasklog" class="form-control" style="resize: vertical;" rows="15">{% for key in info['log'] %}{% for line in key %}{{ line }}{% endfor %}{% endfor %}</textarea>
+  </div>
+</form>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
+<head>
+    <!--<script src="/static/jquery-3.6.0.js"></script>
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/eventhandler.js"></script>
+    <meta charset="UTF-8">
+    <title>分析结果</title>
+</head>
+<body>
+<h3>分析结果：</h3>
+<div id="taskanalyze">
+<table class="table table-hover">
+    <caption>视频播放量top100</caption>
+      <thead>
+        <tr>
+            <th>视频BV号</th>
+            <th>观看量</th>
+            <th>弹幕数</th>
+            <th>点赞数</th>
+            <th>投币数</th>
+            <th>收藏数</th>
+            <th>回复数</th>
+        </tr>
+      </thead>
+  <tbody>
+  {% for vinfo in taskanalyze['top100'] %}
+    <tr>
+    <td><label onclick="$(location).attr('href','https://www.bilibili.com/video/'+'{{ vinfo['bvid'] }}')">{{ vinfo['bvid'] }}</label></td>
+    <td>{{ vinfo['view'] }}</td>
+    <td>{{ vinfo['danmaku'] }}</td>
+    <td>{{ vinfo['favorite'] }}</td>
+    <td>{{ vinfo['coin'] }}</td>
+    <td>{{ vinfo['like'] }}</td>
+    <td>{{ vinfo['reply'] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<table class="table table-hover">
+    <caption>播放量最高的tag</caption>
+        <thead>
+            <tr>
+                <th>tag id</th>
+                <th>tag 名称</th>
+                <th>总计播放量</th>
+            </tr>
+        </thead>
+    <tbody>
+        {% for taginfo in taskanalyze['tagtop100'] %}
+            <tr>
+            <td>{{ taginfo[0] }}</td>
+            <td>{{ taginfo[1] }}</td>
+            <td>{{ taginfo[2] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<label>KMeans聚类分析结果(k={{ kvalue }}):</label>
+<img src="/pic/{{ uid }}" class="img-responsive" alt="Cinque Terre">
+<a class='btn btn-link ' href="{{ url_for('sendcsv',uid=uid) }}">点击下载本次任务的CSV文件</a>
+</div>
+
+
+
+
+</body>
+</html>

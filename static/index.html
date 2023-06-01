@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
+<head>
+    <!--<script src="/static/jquery-3.6.0.js"></script>
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/eventhandler.js"></script>
+    <style>
+        /*谷歌*/
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+        /*火狐*/
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+    <script>
+    function taskListRefresh(){
+        console.log('Refresh')
+        jQuery.get({
+            url:'/taskinfo',
+            success:function (response){
+                $("div#tasklist").html(response)
+            }
+        })
+    }
+    window.onload=taskListRefresh
+    const timer=window.setInterval(taskListRefresh,2500);
+      /* 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
+      this.$once('hook:beforeDestroy', () => {
+          clearInterval(timer);
+        })*/
+    </script>
+    <meta charset="UTF-8">
+    <title>Web爬虫系统</title>
+</head>
+<body>
+<!--
+    主界面：
+    任务列表-> 任务状态 停止任务 ？暂停/继续任务 ？获取分析结果
+    创建新任务
+-->
+<h1>当前系统任务：</h1>
+<div id="tasklist"></div>
+<form class="form-inline" onsubmit="createTask(document.getElementById('user_id').value)" role="form">
+	<div class="form-group">
+		<label for="user_id">创建新任务</label>
+        <input type="number" required class="form-control" id="user_id" placeholder="请输入用户uid">
+	</div>
+    <button type="button" class="btn btn-primary" onsubmit="createTask(document.getElementById('user_id').value)" onclick="createTask(document.getElementById('user_id').value)">提交</button>
+</form>
+
+<br><button type="button" class="btn btn-link" onclick="clearInterval(timer)">关闭页面自动刷新</button>
+
+</body>
+</html>
