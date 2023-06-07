@@ -30,8 +30,9 @@ class webObj:
                 ret['code'] = 1
                 ret['message'] = f"Unexpected {err=}, {type(err)=}"
         else:
+            ret['code'] = 1
+            ret['message'] = f"Function {func=} not exist with param {param=}."
             return ret
-
 
         return ret
 
