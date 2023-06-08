@@ -42,9 +42,37 @@ class webTaskmgr(webObj):
         ret['status'] = status
 
         return ret
-    
+
+    def id_call(self, id: int, func: str, param: str = None):
+        ret: dict = dict()
+        ret['code'] = 0
+
+        if id is not None:
+            if id in self.taskList:
+                return self.taskList[id].call(func=func, param=param)
+            else:
+                ret['code'] = 1
+                ret['message'] = 'No such task with given id'
+                return ret
+
+'''
+    def start(self, id: int):
+        ret: dict = dict()
+        ret['code'] = 0
+
+        if id is not None:
+            if id in self.taskList:
+                return self.taskList[id].start()
+            else:
+                ret['code'] = 1
+                ret['message'] = 'No such task with given id'
+                return ret
+        else:
+            ret['code'] = 1
+            ret['message'] = 'Operation start requires an id'
+'''         
 
 if __name__ == '__main__':
     mgr = webTaskmgr()
 
-    print(mgr.call('start', 'id=2'))
+    print(mgr.call('status', 'id=2,k=8'))
